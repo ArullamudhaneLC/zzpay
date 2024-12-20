@@ -22,9 +22,11 @@ export async function login(credentials: LoginCredentials): Promise<Number> {
   try {
     console.log(credentials);
     const response = await axios.post<AuthResponse>(
-      `${API_URL}/user/login`,
+      `/api/user/login`,
       credentials,
       {
+        withCredentials: true,
+      
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': getCsrfToken(),
@@ -45,6 +47,7 @@ export async function getUsernameByPhone(phoneNumber: string): Promise<string> {
       params: {
         phone_number: phoneNumber,
       },
+      withCredentials: true,
     });
 
     console.log('Response:', response.data);
@@ -73,17 +76,23 @@ export async function getUsernameByPhone(phoneNumber: string): Promise<string> {
 
 export async function logout(): Promise<void> {
   try {
-    await axios.post(`${API_URL}/auth/logout`);
+    // await axios.post(`/api/user/logout`, {withCredentials: true});
+     await axios.get('/api/user/logout', { withCredentials: true }); // Notify backend
+      
+    
     window.dispatchEvent(new CustomEvent('auth:logout'));
   } catch (error) {
     console.error('Logout failed:', error);
   }
 }
 
-export async function getStoredUser(): Promise<string | null> {
+export async function getStoredUser(): Promise<number | null> {
   try {
-    const response = await axios.get<{ user: string }>(`${API_URL}/auth/me`);
-    return response.data.user;
+    const response = await axios.get<any>(`/api/user/profile`, {
+      withCredentials: true, // Include cookies in the request
+    });
+    console.log('getStoredUser', response);
+    return response.status;
   } catch (error) {
     return null;
   }
