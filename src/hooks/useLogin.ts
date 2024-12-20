@@ -38,7 +38,7 @@ export function useLogin(isAdmin: boolean = false) {
       const loginFn = isAdmin ? loginAdmin : loginUser;
       const response = await login(credentials);
       if(response === 200) {
-        setUser('k');
+        setUser(defaultUsername);
         addToast('Successfully logged in', 'success');
         navigate('/dashboard', { replace: true });
 
