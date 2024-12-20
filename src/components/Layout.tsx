@@ -10,6 +10,7 @@ export default function Layout() {
 
   const handleLogout = async () => {
     await logout();
+    console.log('loggedout');
     setUser(null);
     navigate('/login');
   };
