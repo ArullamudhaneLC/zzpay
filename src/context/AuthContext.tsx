@@ -16,10 +16,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedUser = await getStoredUser();
-      if (storedUser) {
-        setUser(storedUser);
+      const response = await getStoredUser();
+      if (response === 200) {
+        setUser('storedUser');
       }
+      // if (storedUser) {
+      //   setUser(storedUser);
+      // }
       setIsLoading(false);
     };
 
